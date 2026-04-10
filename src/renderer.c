@@ -56,6 +56,28 @@ static GlyphCache *renderer_cache_glyph(Renderer *renderer, unsigned char glyph)
     return cache;
 }
 
+bool renderer_update_layout(Renderer *renderer) {
+    if (renderer == NULL || renderer->sdl_renderer == NULL) {
+        return false;
+    }
+
+    int output_w = 0;
+    int output_h = 0;
+    if (SDL_GetRendererOutputSize(renderer->sdl_renderer, &output_w, &output_h) != 0) {
+        return false;
+    }
+
+    renderer->window_w = output_w;
+    renderer->window_h = output_h;
+
+    int content_w = GRID_COLS * renderer->cell_w;
+    int content_h = (GRID_ROWS + HUD_LINES) * renderer->cell_h;
+
+    renderer->origin_x = output_w > content_w ? (output_w - content_w) / 2 : 0;
+    renderer->origin_y = output_h > content_h ? (output_h - content_h) / 2 : 0;
+    return true;
+}
+
 bool renderer_init(Renderer *renderer, SDL_Renderer *sdl_renderer) {
     if (renderer == NULL || sdl_renderer == NULL) {
         return false;
@@ -107,7 +129,7 @@ bool renderer_init(Renderer *renderer, SDL_Renderer *sdl_renderer) {
     }
 
     SDL_SetRenderDrawBlendMode(renderer->sdl_renderer, SDL_BLENDMODE_BLEND);
-    return true;
+    return renderer_update_layout(renderer);
 }
 
 void renderer_shutdown(Renderer *renderer) {
@@ -164,8 +186,8 @@ void renderer_draw_char(Renderer *renderer, int cell_x, int cell_y, char glyph, 
     SDL_SetTextureAlphaMod(cache->texture, color.a);
 
     SDL_Rect destination = {
-        cell_x * renderer->cell_w + (renderer->cell_w - cache->w) / 2,
-        cell_y * renderer->cell_h + (renderer->cell_h - cache->h) / 2,
+        renderer->origin_x + cell_x * renderer->cell_w + (renderer->cell_w - cache->w) / 2,
+        renderer->origin_y + cell_y * renderer->cell_h + (renderer->cell_h - cache->h) / 2,
         cache->w,
         cache->h,
     };
@@ -200,8 +222,8 @@ void renderer_draw_box(Renderer *renderer, int cell_x, int cell_y, int cell_w, i
     }
 
     SDL_Rect fill_rect = {
-        cell_x * renderer->cell_w,
-        cell_y * renderer->cell_h,
+        renderer->origin_x + cell_x * renderer->cell_w,
+        renderer->origin_y + cell_y * renderer->cell_h,
         cell_w * renderer->cell_w,
         cell_h * renderer->cell_h,
     };

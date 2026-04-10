@@ -50,19 +50,19 @@ struct Game {
 
 static const char *const MAIN_MENU_OPTIONS[] = {
     "Start Run",
-    "Quit",
+    "Quit\n",
 };
 
 static const char *const PAUSE_MENU_OPTIONS[] = {
     "Resume",
     "New Run",
-    "Quit",
+    "Quit\n",
 };
 
 static const char *const GAME_OVER_OPTIONS[] = {
     "Retry",
     "Main Menu",
-    "Quit",
+    "Quit\n",
 };
 
 static int game_find_enemy_at(const Game *game, int x, int y) {
@@ -283,6 +283,46 @@ static void game_draw_centered_text(Renderer *renderer, int start_x, int width, 
     renderer_draw_text(renderer, x, row, text, color);
 }
 
+static int game_text_width(const char *text) {
+    if (text == NULL) {
+        return 0;
+    }
+
+    int longest = 0;
+    int current = 0;
+
+    for (const char *cursor = text; *cursor != '\0'; ++cursor) {
+        if (*cursor == '\n') {
+            if (current > longest) {
+                longest = current;
+            }
+            current = 0;
+            continue;
+        }
+
+        ++current;
+    }
+
+    if (current > longest) {
+        longest = current;
+    }
+
+    return longest;
+}
+
+static int game_option_line_width(const char *const *options, int option_count) {
+    int longest = 0;
+
+    for (int index = 0; index < option_count; ++index) {
+        int width = 2 + game_text_width(options[index]);
+        if (width > longest) {
+            longest = width;
+        }
+    }
+
+    return longest;
+}
+
 static void game_draw_menu_frame(Game *game, const char *title, const char *subtitle,
                                  const char *const *options, int option_count, int selected,
                                  SDL_Color selected_color, SDL_Color text_color) {
@@ -290,10 +330,38 @@ static void game_draw_menu_frame(Game *game, const char *title, const char *subt
         return;
     }
 
-    const int box_w = 50;
-    const int box_h = 16;
+    const char *footer = "\nArrows/WASD move. Enter confirms. Esc returns.";
+
+    int box_w = game_text_width(title);
+    int subtitle_w = game_text_width(subtitle);
+    int options_w = game_option_line_width(options, option_count);
+    int footer_w = game_text_width(footer);
+
+    if (subtitle_w > box_w) {
+        box_w = subtitle_w;
+    }
+    if (options_w > box_w) {
+        box_w = options_w;
+    }
+    if (footer_w > box_w) {
+        box_w = footer_w;
+    }
+
+    box_w += 4;
+    if (box_w < 40) {
+        box_w = 40;
+    }
+    if (box_w > GRID_COLS - 4) {
+        box_w = GRID_COLS - 4;
+    }
+
+    int box_h = option_count + 8;
+    if (box_h < 10) {
+        box_h = 10;
+    }
+
     const int box_x = (GRID_COLS - box_w) / 2;
-    const int box_y = 4;
+    const int box_y = (GRID_ROWS - box_h) / 2;
 
     renderer_draw_box(&game->renderer, box_x, box_y, box_w, box_h, COLOR_TEXT, COLOR_PANEL);
     game_draw_centered_text(&game->renderer, box_x, box_w, box_y + 1, title, text_color);
@@ -311,7 +379,7 @@ static void game_draw_menu_frame(Game *game, const char *title, const char *subt
     }
 
     game_draw_centered_text(&game->renderer, box_x, box_w, box_y + box_h - 2,
-                            "Arrow keys or WASD to move. Enter to confirm. Esc to return.",
+                            footer,
                             COLOR_DIM);
 }
 
@@ -399,6 +467,7 @@ static void game_render(Game *game) {
         return;
     }
 
+    renderer_update_layout(&game->renderer);
     renderer_clear(&game->renderer, COLOR_BG);
 
     switch (game->mode) {
@@ -739,7 +808,7 @@ static bool game_init_internal(Game *game) {
         SDL_WINDOWPOS_CENTERED,
         960,
         720,
-        SDL_WINDOW_SHOWN
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
 
     if (game->window == NULL) {
@@ -767,6 +836,7 @@ static bool game_init_internal(Game *game) {
     SDL_SetWindowSize(game->window, window_width, window_height);
     SDL_SetWindowMinimumSize(game->window, window_width, window_height);
     SDL_SetWindowTitle(game->window, GAME_TITLE);
+    renderer_update_layout(&game->renderer);
 
     world_init(&game->world);
     game->running = true;

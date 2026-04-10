@@ -18,10 +18,15 @@ typedef struct Renderer {
     TTF_Font *font;
     int cell_w;
     int cell_h;
+    int window_w;
+    int window_h;
+    int origin_x;
+    int origin_y;
     GlyphCache glyphs[128];
 } Renderer;
 
 bool renderer_init(Renderer *renderer, SDL_Renderer *sdl_renderer);
+bool renderer_update_layout(Renderer *renderer);
 void renderer_shutdown(Renderer *renderer);
 void renderer_clear(Renderer *renderer, SDL_Color color);
 void renderer_present(Renderer *renderer);
