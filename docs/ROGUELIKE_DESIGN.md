@@ -33,9 +33,9 @@
 
 ```
 GUERREIRO          MAGO               ARQUEIRO           LADRÃO
-   Θ               @ ô                 o                   °
- [/|\|             |/|\               \|->               */|\
-  / \              |/ \               / \                 / \
+  Θ                 @                  o                  °
+  [/|\]             /|\               \|->               */|\
+  / \              / \               / \                 / \
 
 capacete metálico   chapéu pontudo    capuz arredondado  capuz baixo
 espada na direita   cajado na mão     arco tenso         adaga oculta
@@ -48,14 +48,14 @@ escudo na esquerda  manto arrastando  carcaj nas costas  postura baixa
 IDLE          ANDANDO-1     ANDANDO-2     ANDANDO-3     ANDANDO-4
   Θ              Θ             Θ             Θ             Θ
  (|)            (|)           (|)           (|)           (|)
---|--           /|\          --|--         --|--         --|--
-  |              |             |             |             |
- | |            / |           / \           | \           | |
+--|--          --|--         --|--         --|--         --|--
+  |              |            / \           \ /            |
+ / \            / \          /   \         /   \          / \
 (frames: 180ms cada — loop contínuo enquanto dx != 0)
 
 ATACANDO-1    ATACANDO-2    ATACANDO-3    VOLTA
   Θ             Θ             Θ             Θ
- (|)           (|)          (|)/!         (|)
+ (|)           (|)          (|)->         (|)
 --|--          --|--\        --|--         --|--
   |              |            |             |
  / \            / \          / \           / \
@@ -63,8 +63,8 @@ ATACANDO-1    ATACANDO-2    ATACANDO-3    VOLTA
 
 DANO          MORTO         DEFENDENDO    AGACHADO      PULANDO
   @             x            [Θ]            Θ            \Θ/
- \|/          --+--         [/|\|          =|=            |
-  | \           |            / \           __            /|\
+ \|/          --+--         [/|\]          _|_           \|/
+  | \           |            / \           / \           / \
 (@ = stunface) (deitado)    (escudo ativo) (menor hitbox)(aéreo)
 ```
 
@@ -259,7 +259,7 @@ DROP:slime         DROP:nothing       DROP:web             DROP:spore+poison
 ```
 CAVALEIRO SOMBRIO          NECROMANTE               GOLEM DE PEDRA
       Θ                        ô                        ███
-    [/|\|                     /|\                      █ ° °█
+    [/|\]                     /|\                      █ ° °█
      / \                      | \                      █  _ █
                                ~                       █/ \█
 HP:80  ATK:18                HP:50 ATK:12             HP:150 ATK:25
@@ -300,13 +300,13 @@ DROP: Clave da Cripta + 200g            DROP: Coroa do Liche + 500g + portal
 BOSS LVL 3 — BEHEMOTH DO ABISMO
            ___________
           /     |     \
-         / 0       0   \
-        |    _____      |
-        |   |     |     |
-        |___|     |_____|
-             |   |
-            / \ / \
-           /   V   \
+      /   0     0   \
+     |      ___      |
+     |     /___\     |
+     |_____/___\_____|
+       /  |  \
+      /   V   \
+     /   / \   \
 HP:800  ATK:60  DEF:35
 PHASE 1: stomps + shockwave (AoE)
 PHASE 2 (HP<400): invoca portal de lava
@@ -580,7 +580,7 @@ MORTE DE INIMIGO:   x . .       EXPLOSÃO:  *   *
 
 ```
 ╔══════════════════════════════════════════╗
-║           INVENTÁRIO — Gabryel           ║
+║           INVENTÁRIO — Rick              ║
 ╠═══════════╦══════════════════════════════╣
 ║  ARMA     ║  [/] Espada Flamejante       ║
 ║  ESCUDO   ║  [[] Escudo de Ferro         ║
@@ -588,12 +588,12 @@ MORTE DE INIMIGO:   x . .       EXPLOSÃO:  *   *
 ║  ARMADURA ║  [H] Couraça de Couro        ║
 ╠═══════════╩══════════════════════════════╣
 ║  BOLSA DE ITENS (12 slots):              ║
-║  [P][P][P][M][M][∞][ ][ ][ ][ ][ ][ ]  ║
-║   ↑   ↑   ↑   ↑   ↑   ↑                ║
-║  HP HP HP MP MP Relíquia                ║
+║  [P][P][P][M][M][∞][ ][ ][ ][ ][ ][ ]    ║
+║   ↑   ↑   ↑   ↑   ↑   ↑                  ║
+║  HP HP HP MP MP Relíquia                 ║
 ╠══════════════════════════════════════════╣
 ║  HABILIDADES (hotkeys 1–4):              ║
-║  [1]Golpe [2]Grito [3]Escudo [4]--      ║
+║  [1]Golpe [2]Grito [3]Escudo [4]--       ║
 ╚══════════════════════════════════════════╝
 ```
 
@@ -602,7 +602,7 @@ MORTE DE INIMIGO:   x . .       EXPLOSÃO:  *   *
 ```
 GAME OVER                          VITÓRIA
   ╔═══════════════╗                ╔═══════════════╗
-  ║   x       x   ║                ║  ★  ★  ★  ★  ║
+  ║   x       x   ║                ║ ★   ★   ★   ★ ║
   ║    \     /    ║                ║               ║
   ║     -----     ║                ║   YOU WIN!    ║
   ║               ║                ║               ║
@@ -739,6 +739,4 @@ HUD Barra EXP     VERDE            #22FF22
 
 ---
 
-*Documento gerado para GitHub Copilot · Roguelike ASCII 2D*
-*Compatível com: C/C++ (ncurses), Python (curses), JavaScript (canvas/terminal)*
-*Versão: 1.0 · Todos os sprites são originais e livres de uso*
+*Compatível com: C/C++ (ncurses)

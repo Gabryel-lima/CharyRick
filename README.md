@@ -21,6 +21,17 @@ See [docs/BUILD.md](docs/BUILD.md) for build prerequisites and commands.
 - Arrow keys or WASD: move Rick / navigate menus
 - Enter or Space: confirm / wait in gameplay
 - Escape: pause or go back
+- F2: toggle the debug HUD overlay during play
+
+## Debug
+
+Use the deterministic snapshot mode to inspect the generated layout in the terminal:
+
+```sh
+./build/CharyRick --debug-snapshot --seed 12345 --floor 2
+```
+
+The snapshot prints the active window metrics, spawn points, player position, and the full 80x24 grid with the HUD rows at the bottom.
 
 ## Notes
 

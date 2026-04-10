@@ -23,6 +23,16 @@ cmake --build build
 ./build/CharyRick
 ```
 
+## Debug snapshot
+
+To inspect the generated dungeon and HUD layout without interacting with the SDL window, run:
+
+```sh
+./build/CharyRick --debug-snapshot --seed 12345 --floor 2
+```
+
+This prints a deterministic text snapshot that the automated smoke test also uses.
+
 ## Font lookup
 
 The renderer searches for a monospace font in a few common locations, including:

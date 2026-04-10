@@ -11,12 +11,23 @@ pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
 pkg_check_modules(SDL2_TTF REQUIRED IMPORTED_TARGET SDL2_ttf)
 
 add_executable(CharyRick
+    src/ascii_art.c
     src/entity.c
     src/game.c
     src/input.c
     src/main.c
     src/renderer.c
     src/world.c
+)
+
+enable_testing()
+
+add_test(NAME debug_snapshot
+    COMMAND $<TARGET_FILE:CharyRick> --debug-snapshot --seed 12345 --floor 2
+)
+
+set_tests_properties(debug_snapshot PROPERTIES
+    PASS_REGULAR_EXPRESSION "=== CHARYRICK DEBUG SNAPSHOT ===;window=;player=;00 \\|"
 )
 
 target_include_directories(CharyRick PRIVATE

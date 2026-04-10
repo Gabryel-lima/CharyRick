@@ -8,6 +8,7 @@ void input_reset(InputState *input) {
     }
 
     memset(input, 0, sizeof(*input));
+    input->ability_slot = -1;
 }
 
 void input_handle_event(InputState *input, const SDL_Event *event) {
@@ -32,8 +33,20 @@ void input_handle_event(InputState *input, const SDL_Event *event) {
         case SDLK_ESCAPE:
             input->cancel = true;
             break;
-        case SDLK_F1:
-            input->toggle_help = true;
+        case SDLK_F2:
+            input->toggle_debug = true;
+            break;
+        case SDLK_i:
+            input->open_inventory = true;
+            break;
+        case SDLK_1:
+            input->ability_slot = 0;
+            break;
+        case SDLK_2:
+            input->ability_slot = 1;
+            break;
+        case SDLK_3:
+            input->ability_slot = 2;
             break;
         case SDLK_UP:
         case SDLK_w:

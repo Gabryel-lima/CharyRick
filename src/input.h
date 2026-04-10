@@ -8,10 +8,12 @@ typedef struct InputState {
     bool quit;
     bool confirm;
     bool cancel;
-    bool toggle_help;
+    bool toggle_debug;
+    bool open_inventory;
     int move_x;
     int move_y;
     int menu_delta;
+    int ability_slot;
 } InputState;
 
 void input_reset(InputState *input);
